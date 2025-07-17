@@ -1,12 +1,58 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Vacaciones</title>
+    <link rel="stylesheet" href="./css/style.css">
     <script defer src="./js/main.js"></script>
-    <title>SIMULADOR</title>
 </head>
+
 <body>
-    <h1>Calcula tus vacaciones</h1>
+
+    <header>
+        <h1>Simulador de Vacaciones</h1>
+        <p>Calculá el costo de tu viaje según destino, días y cantidad de personas.</p>
+    </header>
+
+    <main>
+        <section id="form-section">
+            <form id="simulador-form">
+                <label for="destino">Destino:</label>
+                <select id="destino" required>
+                    <option value="">Seleccioná un destino</option>
+                    <option value="Bariloche">Bariloche</option>
+                    <option value="Mendoza">Mendoza</option>
+                    <option value="Salta">Salta</option>
+                </select>
+
+                <label for="dias">Cantidad de días:</label>
+                <input type="number" id="dias" min="1" required>
+
+                <label for="personas">Cantidad de personas:</label>
+                <input type="number" id="personas" min="1" required>
+
+                <button type="submit">Calcular costo</button>
+            </form>
+        </section>
+
+        <section id="resultado-section">
+            <h2>Resultado</h2>
+            <div id="resultado"></div>
+        </section>
+
+
+        <section id="reservas-section">
+            <h2>Reservas guardadas</h2>
+            <div id="reservas"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 - Simulador desarrollado por SALTURE</p>
+    </footer>
+
 </body>
+
 </html>

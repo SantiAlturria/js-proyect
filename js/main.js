@@ -1,51 +1,91 @@
-const destinos = ["Bariloche", "Mendoza", "Salta"];
-const preciosPorDia = [15000, 12000, 10000]; 
+// Lista de destinos con precios por día //
+const destinos = [
+  { nombre: "Bariloche", precioPorDia: 15000 },
+  { nombre: "Mendoza", precioPorDia: 12000 },
+  { nombre: "Salta", precioPorDia: 10000 }
+];
 
+// Captura de elementos del DOM //
+const form = document.getElementById("simulador-form");
+const resultadoDiv = document.getElementById("resultado");
+const reservasDiv = document.getElementById("reservas");
 
-function mostrarDestinos(destinos) {
-  let mensaje = "Destinos disponibles:\n";
-  for (let i = 0; i < destinos.length; i++) {
-    mensaje += `${i + 1}. ${destinos[i]} - $${preciosPorDia[i]} por día\n`;
+// Cargar reservas previas al iniciar //
+document.addEventListener("DOMContentLoaded", mostrarReservasGuardadas);
+
+// Evento de envío del formulario //
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const destinoSeleccionado = document.getElementById("destino").value;
+  const dias = parseInt(document.getElementById("dias").value);
+  const personas = parseInt(document.getElementById("personas").value);
+
+  // Validación básica 7//
+  if (!destinoSeleccionado || dias <= 0 || personas <= 0 || isNaN(dias) || isNaN(personas)) {
+    mostrarResultado("Por favor, completá todos los campos correctamente.");
+    return;
   }
-  alert(mensaje);
-}
 
+  const destino = destinos.find(d => d.nombre === destinoSeleccionado);
+  const total = calcularCostoTotal(destino.precioPorDia, dias, personas);
 
-function calcularCostoTotal(indiceDestino, dias, personas) {
-  const precioBase = preciosPorDia[indiceDestino];
-  const subtotal = precioBase * dias * personas;
+  const reserva = {
+    destino: destino.nombre,
+    dias,
+    personas,
+    total
+  };
+
+  mostrarResultado(`El costo total del viaje a <strong>${reserva.destino}</strong> es de <strong>$${reserva.total.toFixed(2)}</strong> (IVA incluido).`);
+  guardarReserva(reserva);
+  mostrarReservasGuardadas();
+});
+
+// Calcular total con IVA //
+function calcularCostoTotal(precioPorDia, dias, personas) {
+  const subtotal = precioPorDia * dias * personas;
   const iva = subtotal * 0.21;
   return subtotal + iva;
 }
 
-
-function confirmarReserva(destino, total) {
-  return confirm(`¿Deseás confirmar la reserva a ${destino} por un total de $${total.toFixed(2)}?`);
+// Mostrar resultado en pantalla //
+function mostrarResultado(mensajeHTML) {
+  resultadoDiv.innerHTML = `<p>${mensajeHTML}</p>`;
 }
 
+// Guardar en localStorage //
+function guardarReserva(reserva) {
+  const reservas = obtenerReservas();
+  reservas.push(reserva);
+  localStorage.setItem("reservas", JSON.stringify(reservas));
+}
 
-mostrarDestinos(destinos);
+// Obtener reservas desde localStorage //
+function obtenerReservas() {
+  return JSON.parse(localStorage.getItem("reservas")) || [];
+}
 
-let seleccion = parseInt(prompt("Ingrese el número del destino elegido:")) - 1;
-
-if (seleccion >= 0 && seleccion < destinos.length) {
-  let dias = parseInt(prompt("¿Cuántos días vas a quedarte?"));
-  let personas = parseInt(prompt("¿Cuántas personas viajan?"));
-
-  if (dias > 0 && personas > 0) {
-    let total = calcularCostoTotal(seleccion, dias, personas);
-    alert(`El costo total del viaje a ${destinos[seleccion]} es de $${total.toFixed(2)} (IVA incluido).`);
-
-    if (confirmarReserva(destinos[seleccion], total)) {
-      alert("¡Reserva confirmada! Gracias por usar nuestro simulador.");
-    } else {
-      alert("Reserva cancelada.");
-    }
-
-  } else {
-    alert("Error: Debés ingresar días y personas mayores a 0.");
+// Mostrar reservas guardadas en pantalla //
+function mostrarReservasGuardadas() {
+  const reservas = obtenerReservas();
+  if (reservas.length === 0) {
+    reservasDiv.innerHTML = "<p>No hay reservas guardadas aún.</p>";
+    return;
   }
 
-} else {
-  alert("Destino inválido. Por favor, recargá la página e intentá nuevamente.");
+  reservasDiv.innerHTML = "";
+  reservas.forEach((r, i) => {
+    const card = document.createElement("div");
+    card.classList.add("reserva-card");
+    card.innerHTML = `
+      <p><strong>Reserva #${i + 1}</strong></p>
+      <p>Destino: ${r.destino}</p>
+      <p>Días: ${r.dias}</p>
+      <p>Personas: ${r.personas}</p>
+      <p>Total: $${r.total.toFixed(2)}</p>
+    `;
+    reservasDiv.appendChild(card);
+  });
 }
+
