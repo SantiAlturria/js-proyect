@@ -75,16 +75,16 @@ function mostrarReservasGuardadas() {
   }
 
   
-  reservasDiv.innerHTML = "";
-  reservas.forEach((r, i) => {
-    const card = document.createElement("div");
-    card.classList.add("reserva-card");
-    card.innerHTML = `
-      <p><strong>Reserva #${i + 1}</strong></p>
-      <p>Destino: ${r.destino}</p>
-      <p>Días: ${r.dias}</p>
-      <p>Personas: ${r.personas}</p>
-      <p>Total: $${r.total.toFixed(2)}</p>
+  contenedorReservas.innerHTML = "";
+  reservas.forEach((reserva, indiceReserva) => {
+    const tarjetaReserva = document.createElement("div");
+    tarjetaReserva.classList.add("reserva-card");
+    tarjetaReserva.innerHTML = `
+      <p><strong>Reserva #${indiceReserva + 1}</strong></p>
+      <p>Destino: ${reserva.destino}</p>
+      <p>Días: ${reserva.dias}</p>
+      <p>Personas: ${reserva.personas}</p>
+      <p>Total: $${reserva.total.toFixed(2)}</p>
     `;
     contenedorReservas.appendChild(card);
   });
