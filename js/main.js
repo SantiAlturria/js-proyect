@@ -6,35 +6,35 @@ const destinos = [
 ];
 
 // Captura de elementos del DOM //
-const form = document.getElementById("simulador-form");
-const resultadoDiv = document.getElementById("resultado");
-const reservasDiv = document.getElementById("reservas");
+const formulariSimulador = document.getElementById("simulador-form");
+const contenedorResultado = document.getElementById("resultado");
+const contenedorReservas = document.getElementById("reservas");
 
 // Cargar reservas previas al iniciar //
 document.addEventListener("DOMContentLoaded", mostrarReservasGuardadas);
 
 // Evento de envío del formulario //
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
+formulariSimulador.addEventListener("submit", (evento) => {
+  evento.preventDefault();
 
   const destinoSeleccionado = document.getElementById("destino").value;
-  const dias = parseInt(document.getElementById("dias").value);
-  const personas = parseInt(document.getElementById("personas").value);
+  const cantidadDias = parseInt(document.getElementById("dias").value);
+  const cantidadPersonas = parseInt(document.getElementById("personas").value);
 
-  // Validación básica 7//
-  if (!destinoSeleccionado || dias <= 0 || personas <= 0 || isNaN(dias) || isNaN(personas)) {
+  // Validación básica //
+  if (!destinoSeleccionado || cantidadDias <= 0 || cantidadPersonas <= 0 || isNaN(cantidadDias) || isNaN(cantidadPersonas)) {
     mostrarResultado("Por favor, completá todos los campos correctamente.");
     return;
   }
 
-  const destino = destinos.find(d => d.nombre === destinoSeleccionado);
-  const total = calcularCostoTotal(destino.precioPorDia, dias, personas);
+  const destinoEncontrado = destinos.find(destinoDisponible => destinoDisponible.nombre === destinoSeleccionado);
+  const totalCalculo = calcularCostoTotal(destinoEncontrado.precioPorDia, cantidadDias, cantidadPersonas);
 
   const reserva = {
-    destino: destino.nombre,
-    dias,
-    personas,
-    total
+    destino: destinoEncontrado.nombre,
+    dias: cantidadDias,
+    personas: cantidadPersonas,
+    total: totalCalculo 
   };
 
   mostrarResultado(`El costo total del viaje a <strong>${reserva.destino}</strong> es de <strong>$${reserva.total.toFixed(2)}</strong> (IVA incluido).`);
@@ -57,7 +57,7 @@ function mostrarResultado(mensajeHTML) {
 // Guardar en localStorage //
 function guardarReserva(reserva) {
   const reservas = obtenerReservas();
-  reservas.push(reserva);
+  contenedorResultado.push(reserva);
   localStorage.setItem("reservas", JSON.stringify(reservas));
 }
 
@@ -70,10 +70,11 @@ function obtenerReservas() {
 function mostrarReservasGuardadas() {
   const reservas = obtenerReservas();
   if (reservas.length === 0) {
-    reservasDiv.innerHTML = "<p>No hay reservas guardadas aún.</p>";
+    contenedorReservas.innerHTML = "<p>No hay reservas guardadas aún.</p>";
     return;
   }
 
+  
   reservasDiv.innerHTML = "";
   reservas.forEach((r, i) => {
     const card = document.createElement("div");
@@ -85,7 +86,7 @@ function mostrarReservasGuardadas() {
       <p>Personas: ${r.personas}</p>
       <p>Total: $${r.total.toFixed(2)}</p>
     `;
-    reservasDiv.appendChild(card);
+    contenedorReservas.appendChild(card);
   });
 }
 
