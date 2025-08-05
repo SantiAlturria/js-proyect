@@ -6,7 +6,7 @@ const destinos = [
 ];
 
 // Captura de elementos del DOM //
-const formulariSimulador = document.getElementById("simulador-form");
+const formularioSimulador = document.getElementById("simulador-form"); 
 const contenedorResultado = document.getElementById("resultado");
 const contenedorReservas = document.getElementById("reservas");
 
@@ -14,27 +14,27 @@ const contenedorReservas = document.getElementById("reservas");
 document.addEventListener("DOMContentLoaded", mostrarReservasGuardadas);
 
 // Evento de envío del formulario //
-formulariSimulador.addEventListener("submit", (evento) => {
+formularioSimulador.addEventListener("submit", (evento) => {
   evento.preventDefault();
 
   const destinoSeleccionado = document.getElementById("destino").value;
   const cantidadDias = parseInt(document.getElementById("dias").value);
   const cantidadPersonas = parseInt(document.getElementById("personas").value);
 
-  // Validación básica //
+  // Validación de entradas //
   if (!destinoSeleccionado || cantidadDias <= 0 || cantidadPersonas <= 0 || isNaN(cantidadDias) || isNaN(cantidadPersonas)) {
     mostrarResultado("Por favor, completá todos los campos correctamente.");
     return;
   }
 
-  const destinoEncontrado = destinos.find(destinoDisponible => destinoDisponible.nombre === destinoSeleccionado);
+  const destinoEncontrado = destinos.find(destino => destino.nombre === destinoSeleccionado);
   const totalCalculo = calcularCostoTotal(destinoEncontrado.precioPorDia, cantidadDias, cantidadPersonas);
 
   const reserva = {
     destino: destinoEncontrado.nombre,
     dias: cantidadDias,
     personas: cantidadPersonas,
-    total: totalCalculo 
+    total: totalCalculo
   };
 
   mostrarResultado(`El costo total del viaje a <strong>${reserva.destino}</strong> es de <strong>$${reserva.total.toFixed(2)}</strong> (IVA incluido).`);
@@ -42,7 +42,7 @@ formulariSimulador.addEventListener("submit", (evento) => {
   mostrarReservasGuardadas();
 });
 
-// Calcular total con IVA //
+// Función para calcular costo total con IVA //
 function calcularCostoTotal(precioPorDia, dias, personas) {
   const subtotal = precioPorDia * dias * personas;
   const iva = subtotal * 0.21;
@@ -51,42 +51,42 @@ function calcularCostoTotal(precioPorDia, dias, personas) {
 
 // Mostrar resultado en pantalla //
 function mostrarResultado(mensajeHTML) {
-  resultadoDiv.innerHTML = `<p>${mensajeHTML}</p>`;
+  contenedorResultado.innerHTML = `<p>${mensajeHTML}</p>`; 
 }
 
-// Guardar en localStorage //
+// Guardar una nueva reserva en localStorage //
 function guardarReserva(reserva) {
   const reservas = obtenerReservas();
-  contenedorResultado.push(reserva);
+  reservas.push(reserva);
   localStorage.setItem("reservas", JSON.stringify(reservas));
 }
 
-// Obtener reservas desde localStorage //
+// Obtener reservas existentes desde localStorage //
 function obtenerReservas() {
   return JSON.parse(localStorage.getItem("reservas")) || [];
 }
 
-// Mostrar reservas guardadas en pantalla //
+// Mostrar reservas guardadas //
 function mostrarReservasGuardadas() {
   const reservas = obtenerReservas();
+
   if (reservas.length === 0) {
     contenedorReservas.innerHTML = "<p>No hay reservas guardadas aún.</p>";
     return;
   }
 
-  
-  contenedorReservas.innerHTML = "";
-  reservas.forEach((reserva, indiceReserva) => {
+  contenedorReservas.innerHTML = ""; 
+
+  reservas.forEach((reserva, indice) => {
     const tarjetaReserva = document.createElement("div");
     tarjetaReserva.classList.add("reserva-card");
     tarjetaReserva.innerHTML = `
-      <p><strong>Reserva #${indiceReserva + 1}</strong></p>
+      <p><strong>Reserva #${indice + 1}</strong></p>
       <p>Destino: ${reserva.destino}</p>
       <p>Días: ${reserva.dias}</p>
       <p>Personas: ${reserva.personas}</p>
       <p>Total: $${reserva.total.toFixed(2)}</p>
     `;
-    contenedorReservas.appendChild(card);
+    contenedorReservas.appendChild(tarjetaReserva); 
   });
 }
-
