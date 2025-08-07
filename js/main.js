@@ -8,6 +8,7 @@ const destinos = [
 // Captura de elementos del DOM //
 const formularioSimulador = document.getElementById("simulador-form");
 const contenedorResultado = document.getElementById("resultado");
+const btnCheckout = document.getElementById("btnCheckout");
 const contenedorReservas = document.getElementById("reservas");
 const botonVaciarTodo = document.getElementById("vaciar-todo");
 
@@ -54,6 +55,27 @@ function mostrarResultado(mensajeHTML) {
   contenedorResultado.innerHTML = `<p>${mensajeHTML}</p>`;
 }
 
+// Mostrar reservas guardadas //
+btnCheckout.addEventListener("click", () => {
+  const reservas = obtenerReservas(); 
+
+  if (reservas.length === 0) {
+    alert("No hay reservas para finalizar.");
+    return;
+  }
+
+  // Simular proceso de pago
+  alert("Procesando pago...");
+
+  // Mostrar mensaje de éxito
+  alert("¡Reserva finalizada con éxito!");
+
+  // Limpiar reservas
+  localStorage.removeItem("reservas");
+  mostrarReservasGuardadas();
+  mostrarResultado("Reserva finalizada con éxito.");
+});
+
 // Guardar una nueva reserva en localStorage //
 function guardarReserva(reserva) {
   const reservas = obtenerReservas();
@@ -80,19 +102,27 @@ function mostrarReservasGuardadas() {
   reservas.forEach((reserva, indice) => {
     const tarjetaReserva = document.createElement("div");
     tarjetaReserva.classList.add("reserva-card");
+
     tarjetaReserva.innerHTML = `
       <p><strong>Reserva #${indice + 1}</strong></p>
       <p>Destino: ${reserva.destino}</p>
       <p>Días: ${reserva.dias}</p>
       <p>Personas: ${reserva.personas}</p>
       <p>Total: $${reserva.total.toFixed(2)}</p>
-      <button class="editar-btn" data-indice="${indice}">Editar</button>
-      <button class="eliminar-btn" data-indice="${indice}">Eliminar</button>
-     `;
+      <button class="editar-btn">Editar</button>
+      <button class="eliminar-btn">Eliminar</button>
+    `;
 
     contenedorReservas.appendChild(tarjetaReserva);
+
+    const btnEditar = tarjetaReserva.querySelector(".editar-btn");
+    const btnEliminar = tarjetaReserva.querySelector(".eliminar-btn");
+
+    btnEditar.addEventListener("click", () => editarReserva(indice));
+    btnEliminar.addEventListener("click", () => eliminarReserva(indice));
   });
 }
+
 
 // Vaciar todo //
 botonVaciarTodo.addEventListener("click", () => {
