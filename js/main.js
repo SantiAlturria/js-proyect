@@ -6,12 +6,12 @@ const destinos = [
 ];
 
 // Captura de elementos del DOM //
-const formularioSimulador = document.getElementById("simulador-form"); 
+const formularioSimulador = document.getElementById("simulador-form");
 const contenedorResultado = document.getElementById("resultado");
 const contenedorReservas = document.getElementById("reservas");
+const botonVaciarTodo = document.getElementById("vaciar-todo");
 
-// Cargar reservas previas al iniciar //
-document.addEventListener("DOMContentLoaded", mostrarReservasGuardadas);
+mostrarReservasGuardadas();
 
 // Evento de envío del formulario //
 formularioSimulador.addEventListener("submit", (evento) => {
@@ -51,7 +51,7 @@ function calcularCostoTotal(precioPorDia, dias, personas) {
 
 // Mostrar resultado en pantalla //
 function mostrarResultado(mensajeHTML) {
-  contenedorResultado.innerHTML = `<p>${mensajeHTML}</p>`; 
+  contenedorResultado.innerHTML = `<p>${mensajeHTML}</p>`;
 }
 
 // Guardar una nueva reserva en localStorage //
@@ -75,7 +75,7 @@ function mostrarReservasGuardadas() {
     return;
   }
 
-  contenedorReservas.innerHTML = ""; 
+  contenedorReservas.innerHTML = "";
 
   reservas.forEach((reserva, indice) => {
     const tarjetaReserva = document.createElement("div");
@@ -86,7 +86,42 @@ function mostrarReservasGuardadas() {
       <p>Días: ${reserva.dias}</p>
       <p>Personas: ${reserva.personas}</p>
       <p>Total: $${reserva.total.toFixed(2)}</p>
-    `;
-    contenedorReservas.appendChild(tarjetaReserva); 
+      <button class="editar-btn" data-indice="${indice}">Editar</button>
+      <button class="eliminar-btn" data-indice="${indice}">Eliminar</button>
+     `;
+
+    contenedorReservas.appendChild(tarjetaReserva);
   });
+}
+
+// Vaciar todo //
+botonVaciarTodo.addEventListener("click", () => {
+  if (confirm("¿Estás seguro de que deseas eliminar todas las reservas? Esta acción no se puede deshacer.")) {
+    localStorage.removeItem("reservas");
+    mostrarReservasGuardadas();
+    mostrarResultado("Se eliminaron todas las reservas.");
+  }
+});
+
+// Eliminar reservas //
+function eliminarReserva(indice) {
+  const reservas = obtenerReservas();
+  reservas.splice(indice, 1);
+  localStorage.setItem("reservas", JSON.stringify(reservas));
+  mostrarReservasGuardadas();
+}
+
+function editarReserva(indice) {
+  const reservas = obtenerReservas();
+  const reserva = reservas[indice];
+
+  // Cargar los valores actuales en el formulario //
+  document.getElementById("destino").value = reserva.destino;
+  document.getElementById("dias").value = reserva.dias;
+  document.getElementById("personas").value = reserva.personas;
+
+  // Eliminar la reserva anterior //
+  reservas.splice(indice, 1);
+  localStorage.setItem("reservas", JSON.stringify(reservas));
+  mostrarReservasGuardadas();
 }
