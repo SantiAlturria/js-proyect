@@ -1,63 +1,80 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Simulador de Vacaciones</title>
-    <link rel="stylesheet" href="./css/style.css">
-    <script defer src="./js/main.js"></script>
-</head>
+    <link rel="stylesheet" href="./css/style.css" />
+    <!-- Handlebars -->
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script defer src="./js/api.js"></script>
+    <script defer src="./js/ui.js"></script>
+  </head>
 
-<body>
-
+  <body>
     <header>
-        <h1>Simulador de Vacaciones</h1>
-        <p>Calculá el costo de tu viaje según destino, días y cantidad de personas.</p>
+      <h1>Simulador de Vacaciones</h1>
+      <p>
+        Calculá el costo de tu viaje según destino, días y cantidad de personas.
+      </p>
     </header>
 
     <main>
-        <section id="form-section">
-            <form id="simulador-form">
-                <label for="destino">Destino:</label>
-                <select id="destino" required>
-                    <option value="">Seleccioná un destino</option>
-                    <option value="Bariloche">Bariloche</option>
-                    <option value="Mendoza">Mendoza</option>
-                    <option value="Salta">Salta</option>
-                </select>
+      <!-- Formulario -->
+      <section>
+        <form id="reservaForm">
+          <label for="destino">Destino:</label>
+          <select id="destino" required></select>
 
-                <label for="dias">Cantidad de días:</label>
-                <input type="number" id="dias" min="1" required>
+          <label for="dias">Cantidad de días:</label>
+          <input type="number" id="dias" min="1" required />
 
-                <label for="personas">Cantidad de personas:</label>
-                <input type="number" id="personas" min="1" required>
+          <label for="personas">Cantidad de personas:</label>
+          <input type="number" id="personas" min="1" required />
 
-                <button type="submit">Calcular costo</button>
-            </form>
-            
-        </section>
+          <button type="submit">Agregar Reserva</button>
+        </form>
+      </section>
 
-        <section id="resultado-section">
-            <h2>Resultado</h2>
-            <div id="resultado"></div>
-        </section>
+      <!-- Mensajes -->
+      <section>
+        <p id="mensaje"></p>
+      </section>
 
-        <section>
-            <button id="btnCheckout">Finalizar Reserva</button>
-        </section>
-
-
-        <section id="reservas-section">
-            <h2>Reservas guardadas</h2>
-            <div id="reservas"></div>
-            <button id="vaciar-todo">Vaciar todas las reservas</button>
-        </section>
+      <!-- Lista de reservas -->
+      <section>
+        <h2>Mis Reservas</h2>
+        <ul id="listaReservas"></ul>
+      </section>
     </main>
 
     <footer>
-        <p>&copy; 2025 - Simulador desarrollado por SALTURE</p>
+      <p>&copy; 2025 - Simulador desarrollado por SALTURE</p>
     </footer>
 
-</body>
-
+    <script id="plantilla-reserva" type="text/x-handlebars-template">
+      {{#each reservas}}
+        <li>
+          <strong>{{destino}}</strong>
+          -
+          {{dias}}
+          días -
+          {{personas}}
+          personas - ${{costo}}
+          <button
+            class="btn-editar"
+            data-id="{{id}}"
+            aria-label="Editar reserva {{destino}}"
+          >✏️</button>
+          <button
+            class="btn-borrar"
+            data-id="{{id}}"
+            aria-label="Borrar reserva {{destino}}"
+          >🗑️</button>
+        </li>
+      {{/each}}
+    </script>
+  </body>
 </html>
