@@ -52,7 +52,7 @@
           <button class="btn-general btn-borrar" data-id="${r.id}">Eliminar</button>
           ${
             r.confirmada
-              ? `<button class="btn-general btn-confirmada" disabled>✅ Confirmada</button>`
+              ? `<button class="btn-general btn-confirmada" disabled>✅Confirmada</button>`
               : `<button class="btn-general btn-confirmar" data-id="${r.id}">Confirmar</button>`
           }
         </li>
@@ -168,7 +168,7 @@
         diasInput.value = r.dias;
         personasInput.value = r.personas;
         editandoId = id;
-        btnSubmit.textContent = "Guardar cambios";
+        btnSubmit.textContent = "Guarda los cambios de tus cambios realizados";
       }
     }
   }

@@ -59,7 +59,8 @@ label {
   color: #34495e;
 }
 
-select, input[type="number"] {
+select,
+input[type="number"] {
   padding: 10px 12px;
   border-radius: 8px;
   border: 1.8px solid #bdc3c7;
@@ -67,12 +68,14 @@ select, input[type="number"] {
   transition: border-color 0.3s ease;
 }
 
-select:focus, input[type="number"]:focus {
+select:focus,
+input[type="number"]:focus {
   outline: none;
   border-color: #2980b9;
   box-shadow: 0 0 5px #2980b9aa;
 }
 
+/* Botón principal del formulario */
 button[type="submit"] {
   background-color: #2980b9;
   border: none;
@@ -122,24 +125,36 @@ button[type="submit"]:hover {
   border-bottom: none;
 }
 
-/* Botones editar y borrar */
+/* Botones */
 .btn-general {
   background-color: #2980b9;
   border: none;
-  padding: 12px 15px;
+  padding: 8px 12px;
   color: white;
-  font-weight: 700;
-  border-radius: 10px;
+  font-weight: 600;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   transition: background-color 0.3s ease;
+  margin-left: 5px;
 }
 
 .btn-general:hover {
   background-color: #1f6391;
 }
 
+.btn-general[disabled] {
+  background-color: #27ae60; 
+  cursor: default;
+}
 
+.btn-borrar {
+  background-color: #e74c3c;
+}
+
+.btn-borrar:hover {
+  background-color: #c0392b;
+}
 /* Footer */
 footer {
   text-align: center;
