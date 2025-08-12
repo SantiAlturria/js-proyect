@@ -1,4 +1,4 @@
-/* Reset básico */
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -17,7 +17,6 @@ body {
   justify-content: space-between;
 }
 
-/* Encabezado */
 header {
   text-align: center;
   margin-bottom: 30px;
@@ -34,7 +33,6 @@ header p {
   color: #7f8c8d;
 }
 
-/* Main */
 main {
   max-width: 700px;
   width: 90%;
@@ -45,7 +43,6 @@ main {
   padding: 25px 30px;
 }
 
-/* Formulario */
 form {
   display: flex;
   flex-direction: column;
@@ -75,7 +72,7 @@ input[type="number"]:focus {
   box-shadow: 0 0 5px #2980b9aa;
 }
 
-/* Botón principal del formulario */
+
 button[type="submit"] {
   background-color: #2980b9;
   border: none;
@@ -93,7 +90,6 @@ button[type="submit"]:hover {
   background-color: #1f6391;
 }
 
-/* Mensaje */
 #mensaje {
   color: #e74c3c;
   font-weight: 600;
@@ -101,7 +97,7 @@ button[type="submit"]:hover {
   min-height: 22px;
 }
 
-/* Lista de Reservas */
+
 #listaReservas {
   list-style: none;
   padding-left: 0;
@@ -125,7 +121,7 @@ button[type="submit"]:hover {
   border-bottom: none;
 }
 
-/* Botones */
+
 .btn-general {
   background-color: #2980b9;
   border: none;
@@ -155,7 +151,7 @@ button[type="submit"]:hover {
 .btn-borrar:hover {
   background-color: #c0392b;
 }
-/* Footer */
+
 footer {
   text-align: center;
   font-size: 0.9rem;

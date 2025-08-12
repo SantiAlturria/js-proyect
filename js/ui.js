@@ -95,7 +95,7 @@
     ) {
       Swal.fire(
         "Error",
-        "Complete todos los campos correctamente (máx. 30 días y 10 personas)",
+        "¡Atención! En caso de que su reserva supere los 30 días de reserva o necesite reservar para 10 personas, porfavor, comuniquesé con nosotros. ¡Muchas gracias!",
         "error"
       );
       return;

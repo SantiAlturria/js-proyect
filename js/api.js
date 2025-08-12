@@ -1,8 +1,6 @@
-// api.js
-
 /**
  * Obtiene la lista de destinos desde el archivo JSON.
- * @returns {Promise<Array>} Lista de destinos o array vacío en caso de error.
+ * @returns {Promise<Array>}
  */
 async function obtenerDestinos() {
     try {
